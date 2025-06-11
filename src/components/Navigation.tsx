@@ -1,6 +1,6 @@
 
 import { useState } from 'react';
-import { Menu, X, Home, Search, Plus } from 'lucide-react';
+import { Menu, X, Home, Users, Building, Phone, Search, GraduationCap, Bed } from 'lucide-react';
 
 interface NavigationProps {
   currentPage: string;
@@ -12,8 +12,12 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
 
   const navigationItems = [
     { id: 'home', label: 'Home', icon: Home },
-    { id: 'projects', label: 'Projects', icon: Search },
-    { id: 'templates', label: 'Templates', icon: Plus },
+    { id: 'about', label: 'About Us', icon: Users },
+    { id: 'how-it-works', label: 'How It Works', icon: GraduationCap },
+    { id: 'institutions', label: 'Institutions', icon: Building },
+    { id: 'course-finder', label: 'Course Finder', icon: Search },
+    { id: 'accommodation', label: 'Accommodation', icon: Bed },
+    { id: 'contact', label: 'Contact Us', icon: Phone },
   ];
 
   return (
@@ -53,8 +57,8 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-slate-200 p-4 z-40">
-          <nav className="flex justify-around">
+        <div className="md:hidden fixed top-16 left-0 right-0 bg-white/95 backdrop-blur-md border-b border-slate-200 p-4 z-40 max-h-96 overflow-y-auto">
+          <nav className="grid grid-cols-2 gap-2">
             {navigationItems.map((item) => (
               <button
                 key={item.id}
