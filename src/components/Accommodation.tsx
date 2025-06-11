@@ -1,7 +1,11 @@
 
-import { Search, MapPin, Bed, Wifi, Car, Shield, Star } from 'lucide-react';
+import { Search, MapPin, Bed, Wifi, Car, Shield, Star, Plus } from 'lucide-react';
+import { useState } from 'react';
+import AccommodationListingModal from './AccommodationListingModal';
 
 const Accommodation = () => {
+  const [isListingModalOpen, setIsListingModalOpen] = useState(false);
+
   const listings = [
     {
       title: '9 Guildford Street Brixton Johannesburg 2092',
@@ -85,14 +89,23 @@ const Accommodation = () => {
   ];
 
   return (
-    <div className="flex-1 md:ml-16 min-h-screen pt-20 md:pt-12 px-6">
+    <div className="flex-1 md:ml-24 min-h-screen pt-20 md:pt-12 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-6">Student Accommodation</h1>
-          <p className="text-lg text-slate-600 max-w-3xl mx-auto">
+          <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-8">
             Search for affordable student accommodation near your university or college with Graduin. Find safe, comfortable, and convenient housing options.
           </p>
+          
+          {/* List Property Button */}
+          <button 
+            onClick={() => setIsListingModalOpen(true)}
+            className="bg-gradient-to-r from-green-500 to-emerald-500 text-white px-8 py-4 rounded-xl font-semibold hover:shadow-lg transition-all duration-200 flex items-center gap-2 mx-auto"
+          >
+            <Plus size={20} />
+            Submit My Own Listing
+          </button>
         </div>
 
         {/* Search and Filters */}
@@ -217,6 +230,12 @@ const Accommodation = () => {
           </button>
         </div>
       </div>
+
+      {/* Listing Modal */}
+      <AccommodationListingModal 
+        isOpen={isListingModalOpen}
+        onClose={() => setIsListingModalOpen(false)}
+      />
     </div>
   );
 };

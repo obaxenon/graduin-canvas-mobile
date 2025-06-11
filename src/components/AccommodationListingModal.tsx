@@ -1,0 +1,465 @@
+
+import { useState } from 'react';
+import { X, Check, Upload, MapPin, Star } from 'lucide-react';
+
+interface AccommodationListingModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+interface FormData {
+  // Personal Details
+  fullName: string;
+  email: string;
+  phone: string;
+  idNumber: string;
+  idDocument: File | null;
+  
+  // Property Details
+  propertyName: string;
+  address: string;
+  city: string;
+  province: string;
+  propertyType: string;
+  bedrooms: number;
+  bathrooms: number;
+  price: number;
+  description: string;
+  amenities: string[];
+  photos: File[];
+  
+  // Subscription
+  selectedTier: 'basic' | 'standard' | 'premium' | null;
+}
+
+const AccommodationListingModal = ({ isOpen, onClose }: AccommodationListingModalProps) => {
+  const [currentStep, setCurrentStep] = useState(1);
+  const [formData, setFormData] = useState<FormData>({
+    fullName: '',
+    email: '',
+    phone: '',
+    idNumber: '',
+    idDocument: null,
+    propertyName: '',
+    address: '',
+    city: '',
+    province: '',
+    propertyType: '',
+    bedrooms: 1,
+    bathrooms: 1,
+    price: 0,
+    description: '',
+    amenities: [],
+    photos: [],
+    selectedTier: null
+  });
+
+  const tiers = [
+    {
+      id: 'basic',
+      name: 'Basic',
+      price: 149,
+      features: [
+        '1 listing allowed',
+        'Basic contact details (email or WhatsApp only)',
+        'Limited photo uploads (up to 5)',
+        'No visibility boost',
+        'Platform branding'
+      ],
+      target: 'Small landlords, test users'
+    },
+    {
+      id: 'standard',
+      name: 'Standard',
+      price: 349,
+      features: [
+        'Up to 3 listings',
+        'Full contact info access',
+        'More photos (up to 10)',
+        'Google Maps location integration',
+        'Moderate visibility boost',
+        'Reviews and rating enabled',
+        'Chat feature on platform'
+      ],
+      target: 'Owners with multiple rooms'
+    },
+    {
+      id: 'premium',
+      name: 'Premium',
+      price: 699,
+      features: [
+        'Up to 10 listings',
+        'All Standard features included',
+        'Verified Badge',
+        'Video upload or virtual tour',
+        'Enhanced visibility (top 10%)',
+        'Featured in email marketing'
+      ],
+      target: 'Student complex managers'
+    }
+  ];
+
+  const amenitiesList = [
+    'Wi-Fi', 'Parking', 'Security', 'Laundry', 'Kitchen', 'Study Area',
+    'Pool', 'Gym', 'Air Conditioning', 'Heating', 'Garden', 'Balcony'
+  ];
+
+  const provinces = [
+    'Gauteng', 'Western Cape', 'KwaZulu-Natal', 'Eastern Cape',
+    'Free State', 'Limpopo', 'Mpumalanga', 'North West', 'Northern Cape'
+  ];
+
+  if (!isOpen) return null;
+
+  const handleSubmit = async () => {
+    const formSubmitData = new FormData();
+    
+    // Add all form fields
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key === 'photos') {
+        value.forEach((file: File, index: number) => {
+          formSubmitData.append(`photo_${index}`, file);
+        });
+      } else if (key === 'idDocument' && value) {
+        formSubmitData.append('id_document', value);
+      } else if (key === 'amenities') {
+        formSubmitData.append(key, value.join(', '));
+      } else {
+        formSubmitData.append(key, value.toString());
+      }
+    });
+
+    try {
+      await fetch('https://formsubmit.co/alcottde@gmail.com', {
+        method: 'POST',
+        body: formSubmitData
+      });
+
+      // Show success message
+      alert('Your property listing application has been submitted successfully! Our team will review it and it will go live upon payment confirmation. You will receive an email with payment details shortly.');
+      onClose();
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error submitting your application. Please try again.');
+    }
+  };
+
+  const renderStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Choose Your Subscription Tier</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {tiers.map((tier) => (
+                <div
+                  key={tier.id}
+                  className={`border-2 rounded-xl p-6 cursor-pointer transition-all ${
+                    formData.selectedTier === tier.id
+                      ? 'border-purple-500 bg-purple-50'
+                      : 'border-slate-200 hover:border-purple-300'
+                  }`}
+                  onClick={() => setFormData(prev => ({ ...prev, selectedTier: tier.id as any }))}
+                >
+                  <div className="text-center mb-4">
+                    <h4 className="text-xl font-bold text-slate-800">{tier.name}</h4>
+                    <p className="text-3xl font-bold text-purple-600">R{tier.price}</p>
+                    <p className="text-sm text-slate-500">per month</p>
+                  </div>
+                  <ul className="space-y-2 mb-4">
+                    {tier.features.map((feature, index) => (
+                      <li key={index} className="flex items-center gap-2 text-sm">
+                        <Check size={16} className="text-green-500" />
+                        <span>{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <p className="text-xs text-slate-600 italic">Best for: {tier.target}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Personal Information & Verification</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.fullName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, fullName: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number *</label>
+                <input
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">ID Number *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.idNumber}
+                  onChange={(e) => setFormData(prev => ({ ...prev, idNumber: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Upload ID Document *</label>
+              <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center">
+                <Upload className="mx-auto mb-2 text-slate-400" size={48} />
+                <p className="text-slate-600 mb-2">Upload your ID document for verification</p>
+                <input
+                  type="file"
+                  accept="image/*,.pdf"
+                  onChange={(e) => setFormData(prev => ({ ...prev, idDocument: e.target.files?.[0] || null }))}
+                  className="hidden"
+                  id="id-upload"
+                />
+                <label htmlFor="id-upload" className="button-primary cursor-pointer">
+                  Choose File
+                </label>
+                {formData.idDocument && (
+                  <p className="text-sm text-green-600 mt-2">✓ {formData.idDocument.name}</p>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-6">
+            <h3 className="text-2xl font-bold text-slate-800 mb-6">Property Listing Details</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Property Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.propertyName}
+                  onChange={(e) => setFormData(prev => ({ ...prev, propertyName: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Monthly Price (ZAR) *</label>
+                <input
+                  type="number"
+                  required
+                  value={formData.price}
+                  onChange={(e) => setFormData(prev => ({ ...prev, price: parseInt(e.target.value) }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">Address *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.address}
+                  onChange={(e) => setFormData(prev => ({ ...prev, address: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">City *</label>
+                <input
+                  type="text"
+                  required
+                  value={formData.city}
+                  onChange={(e) => setFormData(prev => ({ ...prev, city: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Province *</label>
+                <select
+                  required
+                  value={formData.province}
+                  onChange={(e) => setFormData(prev => ({ ...prev, province: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                >
+                  <option value="">Select Province</option>
+                  {provinces.map(province => (
+                    <option key={province} value={province}>{province}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Bedrooms</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={formData.bedrooms}
+                  onChange={(e) => setFormData(prev => ({ ...prev, bedrooms: parseInt(e.target.value) }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Bathrooms</label>
+                <input
+                  type="number"
+                  min="1"
+                  value={formData.bathrooms}
+                  onChange={(e) => setFormData(prev => ({ ...prev, bathrooms: parseInt(e.target.value) }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+                />
+              </div>
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Property Description *</label>
+              <textarea
+                required
+                rows={4}
+                value={formData.description}
+                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-purple-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Amenities</label>
+              <div className="grid grid-cols-3 md:grid-cols-4 gap-2">
+                {amenitiesList.map(amenity => (
+                  <label key={amenity} className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={formData.amenities.includes(amenity)}
+                      onChange={(e) => {
+                        if (e.target.checked) {
+                          setFormData(prev => ({ ...prev, amenities: [...prev.amenities, amenity] }));
+                        } else {
+                          setFormData(prev => ({ ...prev, amenities: prev.amenities.filter(a => a !== amenity) }));
+                        }
+                      }}
+                      className="rounded"
+                    />
+                    <span className="text-sm">{amenity}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-2">Property Photos *</label>
+              <div className="border-2 border-dashed border-slate-300 rounded-xl p-6 text-center">
+                <Upload className="mx-auto mb-2 text-slate-400" size={48} />
+                <p className="text-slate-600 mb-2">Upload property photos (minimum 3 photos)</p>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => setFormData(prev => ({ ...prev, photos: Array.from(e.target.files || []) }))}
+                  className="hidden"
+                  id="photos-upload"
+                />
+                <label htmlFor="photos-upload" className="button-primary cursor-pointer">
+                  Choose Photos
+                </label>
+                {formData.photos.length > 0 && (
+                  <p className="text-sm text-green-600 mt-2">✓ {formData.photos.length} photos selected</p>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+
+      default:
+        return null;
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+      <div className="bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+        <div className="flex items-center justify-between p-6 border-b border-slate-200 sticky top-0 bg-white rounded-t-2xl">
+          <h2 className="text-2xl font-bold text-slate-800">List Your Property</h2>
+          <button 
+            onClick={onClose}
+            className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
+          >
+            <X size={24} className="text-slate-600" />
+          </button>
+        </div>
+
+        <div className="p-6">
+          {/* Progress Indicator */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="flex items-center gap-4">
+              {[1, 2, 3].map((step) => (
+                <div key={step} className="flex items-center">
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                    currentStep >= step ? 'bg-purple-500 text-white' : 'bg-slate-200 text-slate-600'
+                  }`}>
+                    {step}
+                  </div>
+                  {step < 3 && (
+                    <div className={`w-12 h-0.5 mx-2 ${
+                      currentStep > step ? 'bg-purple-500' : 'bg-slate-200'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {renderStep()}
+
+          {/* Navigation Buttons */}
+          <div className="flex justify-between mt-8">
+            <button
+              onClick={() => currentStep > 1 ? setCurrentStep(currentStep - 1) : onClose()}
+              className="px-6 py-3 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors"
+            >
+              {currentStep > 1 ? 'Previous' : 'Cancel'}
+            </button>
+            
+            {currentStep < 3 ? (
+              <button
+                onClick={() => setCurrentStep(currentStep + 1)}
+                disabled={currentStep === 1 && !formData.selectedTier}
+                className="button-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Next
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                className="button-primary"
+              >
+                Submit Application
+              </button>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default AccommodationListingModal;

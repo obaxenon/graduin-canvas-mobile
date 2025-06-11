@@ -1,6 +1,4 @@
-
-import { Facebook, Instagram, Youtube, Twitter, Send } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
 
 const Footer = () => {
   const mainLinks = [
@@ -45,7 +43,6 @@ const Footer = () => {
                 alt="Graduin Logo" 
                 className="w-8 h-8"
               />
-              <span className="font-bold text-xl gradient-text">Graduin</span>
             </div>
             <p className="text-slate-600 mb-6">
               Simplifying university applications for South African students. Apply to multiple institutions with a single application.
@@ -109,7 +106,7 @@ const Footer = () => {
                 className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
               />
               <button className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-gradient-to-r from-purple-500 to-blue-500 text-white p-1.5 rounded-lg">
-                <Send size={16} />
+                →
               </button>
             </div>
           </div>

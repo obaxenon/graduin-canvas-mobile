@@ -1,24 +1,59 @@
 
-import { Search, ArrowRight } from 'lucide-react';
+import { Search, ArrowRight, Building, BookOpen, Bed, FileText, Bot, Users, GraduationCap, Clock } from 'lucide-react';
+import { useState } from 'react';
+import AIAssistant from './AIAssistant';
 
 interface DashboardProps {
   onPageChange: (page: string) => void;
 }
 
 const Dashboard = ({ onPageChange }: DashboardProps) => {
-  const designOptions = [
-    { id: 'course-finder', title: 'Course Finder', color: 'bg-blue-500', isNew: false },
-    { id: 'institutions', title: 'Institutions', color: 'bg-teal-500', isNew: false },
-    { id: 'accommodation', title: 'Accommodation', color: 'bg-green-500', isNew: false },
-    { id: 'application', title: 'Apply Now', color: 'bg-orange-500', isNew: true },
-    { id: 'track', title: 'Track Application', color: 'bg-red-500', isNew: false },
-    { id: 'documents', title: 'Documents', color: 'bg-pink-500', isNew: false },
-    { id: 'profile', title: 'My Profile', color: 'bg-purple-500', isNew: false },
-    { id: 'support', title: 'Support', color: 'bg-indigo-500', isNew: false },
-    { id: 'career', title: 'Career Guide', color: 'bg-blue-600', isNew: true },
-    { id: 'scholarships', title: 'Scholarships', color: 'bg-gray-500', isNew: false },
-    { id: 'requirements', title: 'Requirements', color: 'bg-gray-600', isNew: false },
-    { id: 'deadlines', title: 'Deadlines', color: 'bg-gray-700', isNew: false },
+  const [showAI, setShowAI] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const actionCards = [
+    { 
+      id: 'course-finder', 
+      title: 'Course Finder', 
+      icon: BookOpen,
+      description: 'Find your perfect course',
+      isNew: false 
+    },
+    { 
+      id: 'institutions', 
+      title: 'Institutions', 
+      icon: Building,
+      description: 'Browse universities',
+      isNew: false 
+    },
+    { 
+      id: 'accommodation', 
+      title: 'Accommodation', 
+      icon: Bed,
+      description: 'Find student housing',
+      isNew: false 
+    },
+    { 
+      id: 'application', 
+      title: 'Apply Now', 
+      icon: FileText,
+      description: 'Start your application',
+      isNew: true 
+    },
+    { 
+      id: 'track', 
+      title: 'Track Application', 
+      icon: Clock,
+      description: 'Monitor progress',
+      isNew: false 
+    },
+    { 
+      id: 'profile', 
+      title: 'My Profile', 
+      icon: Users,
+      description: 'Manage your details',
+      isNew: false 
+    },
   ];
 
   const recentActivity = [
@@ -28,8 +63,22 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
     { id: 4, title: 'Application Documents', type: 'Upload Required', status: 'Pending' },
   ];
 
+  const handleCardClick = (id: string) => {
+    if (id === 'course-finder' || id === 'institutions' || id === 'accommodation') {
+      onPageChange(id);
+    } else {
+      console.log(`Selected ${id}`);
+    }
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim()) {
+      onPageChange('institutions');
+    }
+  };
+
   return (
-    <div className="flex-1 md:ml-16 min-h-screen">
+    <div className="flex-1 md:ml-24 min-h-screen">
       {/* Main Header */}
       <div className="pt-20 md:pt-12 px-6 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 gradient-text animate-fade-in">
@@ -56,7 +105,10 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
           >
             <span>🏠</span> Accommodation
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-purple-600 transition-colors">
+          <button 
+            onClick={() => setShowAI(true)}
+            className="flex items-center gap-2 px-4 py-2 text-slate-600 hover:text-purple-600 transition-colors"
+          >
             <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-0.5 rounded text-xs font-bold">New</span>
             AI Assistant
           </button>
@@ -69,34 +121,51 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
             <input
               type="text"
               placeholder="Search courses, universities, or accommodation..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
               className="w-full pl-12 pr-16 py-4 rounded-2xl border border-slate-200 bg-white/80 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             />
-            <button className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors">
+            <button 
+              onClick={handleSearch}
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+            >
               <ArrowRight size={20} className="text-slate-600" />
             </button>
           </div>
         </div>
       </div>
 
+      {/* As Featured On Section */}
+      <div className="px-6 mb-12">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-xl font-semibold text-slate-600 mb-6">As Featured On</h2>
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
+            <img 
+              src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+              alt="As Featured On" 
+              className="w-full max-w-4xl mx-auto h-auto object-contain"
+            />
+          </div>
+        </div>
+      </div>
+
       {/* Quick Actions Grid */}
       <div className="px-6 mb-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
-          {designOptions.map((option) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 max-w-6xl mx-auto">
+          {actionCards.map((card) => (
             <div
-              key={option.id}
+              key={card.id}
               className="relative group cursor-pointer"
-              onClick={() => {
-                if (option.id === 'course-finder' || option.id === 'institutions' || option.id === 'accommodation') {
-                  onPageChange(option.id);
-                } else {
-                  console.log(`Selected ${option.title}`);
-                }
-              }}
+              onClick={() => handleCardClick(card.id)}
             >
               <div className="aspect-square bg-white rounded-2xl shadow-sm border border-slate-200 p-6 card-hover">
-                <div className={`w-12 h-12 ${option.color} rounded-xl mb-4 mx-auto`}></div>
-                <h3 className="font-medium text-slate-700 text-center text-sm">{option.title}</h3>
-                {option.isNew && (
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mb-4 mx-auto flex items-center justify-center">
+                  <card.icon className="text-purple-600" size={24} />
+                </div>
+                <h3 className="font-medium text-slate-700 text-center text-sm mb-1">{card.title}</h3>
+                <p className="text-xs text-slate-500 text-center">{card.description}</p>
+                {card.isNew && (
                   <span className="absolute -top-2 -right-2 bg-purple-500 text-white text-xs px-2 py-1 rounded-full font-bold">
                     New
                   </span>
@@ -145,6 +214,9 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
           </div>
         </div>
       </div>
+
+      {/* AI Assistant */}
+      {showAI && <AIAssistant onClose={() => setShowAI(false)} />}
     </div>
   );
 };

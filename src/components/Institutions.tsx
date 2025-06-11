@@ -25,7 +25,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '40,000+',
       established: '1922',
-      thumbnail: 'bg-gradient-to-br from-blue-400 to-blue-600',
+      thumbnail: '/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png',
       applicationFee: 200,
       courses: ['Engineering', 'Medicine', 'Law', 'Business', 'Arts', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 30+', 'English: 50%+', 'Mathematics: 50%+'],
@@ -138,7 +138,7 @@ const Institutions = () => {
   };
 
   return (
-    <div className="flex-1 md:ml-16 min-h-screen pt-20 md:pt-12 px-6">
+    <div className="flex-1 md:ml-24 min-h-screen pt-20 md:pt-12 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8 flex items-center justify-between">
@@ -195,8 +195,12 @@ const Institutions = () => {
                 className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 card-hover cursor-pointer"
                 onClick={() => setSelectedType(type.id)}
               >
-                <div className={`w-12 h-12 ${type.color} rounded-xl mb-4 flex items-center justify-center`}>
-                  <type.icon className="text-white" size={24} />
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mb-4 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+                    alt="Education" 
+                    className="w-6 h-6 object-contain"
+                  />
                 </div>
                 <h3 className="font-semibold text-slate-800 mb-2">{type.title}</h3>
                 <p className="text-slate-500 text-sm">{type.count}</p>
@@ -227,8 +231,12 @@ const Institutions = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredInstitutions.map((institution, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer">
-                <div className={`h-32 ${institution.thumbnail} flex items-center justify-center`}>
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl"></div>
+                <div className="h-32 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                  <img 
+                    src={institution.thumbnail} 
+                    alt={institution.name}
+                    className="w-16 h-16 object-contain"
+                  />
                 </div>
                 <div className="p-6">
                   <h3 className="font-semibold text-slate-800 mb-2">{institution.name}</h3>
@@ -282,7 +290,13 @@ const Institutions = () => {
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {['Student Accommodation', 'Course Finder', 'Private Institutions', 'Traditional Universities', 'Universities of Technology'].map((link, index) => (
               <button key={index} className="p-4 text-center hover:bg-slate-50 rounded-xl transition-colors">
-                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mx-auto mb-2"></div>
+                <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mx-auto mb-2 flex items-center justify-center">
+                  <img 
+                    src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+                    alt="Education" 
+                    className="w-6 h-6 object-contain"
+                  />
+                </div>
                 <span className="text-sm text-slate-600 font-medium">{link}</span>
               </button>
             ))}

@@ -23,21 +23,21 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
   return (
     <>
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex fixed left-0 top-0 h-full w-20 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col items-center py-6 z-50">
+      <div className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col items-center py-6 z-50">
         <div className="mb-8">
           <img 
-            src="/lovable-uploads/b91853a2-3b15-4994-9915-01804d67b62e.png" 
+            src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
             alt="Graduin Logo" 
-            className="w-8 h-8"
+            className="w-10 h-10 object-contain"
           />
         </div>
         
-        <nav className="flex flex-col gap-3 w-full px-2">
+        <nav className="flex flex-col gap-3 w-full px-3">
           {navigationItems.map((item) => (
             <button
               key={item.id}
               onClick={() => onPageChange(item.id)}
-              className={`flex flex-col items-center px-3 py-3 rounded-xl text-slate-600 hover:text-purple-600 hover:bg-white/70 transition-all duration-200 ${
+              className={`flex flex-col items-center px-4 py-3 rounded-xl text-slate-600 hover:text-purple-600 hover:bg-white/70 transition-all duration-200 ${
                 currentPage === item.id ? 'text-purple-600 bg-white shadow-sm' : ''
               }`}
               title={item.label}

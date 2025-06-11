@@ -1,7 +1,10 @@
-
+import { useState } from 'react';
 import { FileText, Send, CheckCircle, PlayCircle } from 'lucide-react';
+import VideoModal from './VideoModal';
 
 const HowItWorks = () => {
+  const [selectedVideo, setSelectedVideo] = useState<{url: string, title: string} | null>(null);
+
   const steps = [
     {
       icon: FileText,
@@ -32,8 +35,21 @@ const HowItWorks = () => {
     'Course recommendation engine'
   ];
 
+  const videos = [
+    {
+      title: 'What is Graduin?',
+      url: 'https://www.youtube.com/watch?v=x12lkxQQo4Q&t=1s',
+      description: 'Learn about our platform and how it simplifies university applications'
+    },
+    {
+      title: 'Graduin Featured on eNCA',
+      url: 'https://www.youtube.com/watch?v=z5WaMVaf0QU&t=2s',
+      description: 'Watch our feature on eNCA highlighting our impact on South African education'
+    }
+  ];
+
   return (
-    <div className="flex-1 md:ml-16 min-h-screen pt-20 md:pt-12 px-6">
+    <div className="flex-1 md:ml-24 min-h-screen pt-20 md:pt-12 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Breadcrumbs */}
         <div className="flex items-center gap-2 text-sm text-slate-500 mb-8">
@@ -48,6 +64,31 @@ const HowItWorks = () => {
           <p className="text-lg text-slate-600 max-w-3xl mx-auto">
             Graduin simplifies the university application process by allowing you to apply to multiple institutions with a single application. Here's how it works:
           </p>
+        </div>
+
+        {/* Video Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-slate-800 text-center mb-12">Watch & Learn</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {videos.map((video, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer"
+                   onClick={() => setSelectedVideo(video)}>
+                <div className="aspect-video bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center relative">
+                  <PlayCircle className="text-purple-600" size={64} />
+                  <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                    <div className="text-white text-center">
+                      <PlayCircle size={48} className="mx-auto mb-2" />
+                      <p className="text-sm font-medium">Click to Play</p>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold text-slate-800 mb-2">{video.title}</h3>
+                  <p className="text-slate-600">{video.description}</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* What is Graduin Section */}
@@ -136,6 +177,16 @@ const HowItWorks = () => {
           </button>
         </div>
       </div>
+
+      {/* Video Modal */}
+      {selectedVideo && (
+        <VideoModal
+          isOpen={true}
+          onClose={() => setSelectedVideo(null)}
+          videoUrl={selectedVideo.url}
+          title={selectedVideo.title}
+        />
+      )}
     </div>
   );
 };
