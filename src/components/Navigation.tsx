@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Menu, X, Home, Users, Building, Phone, Search, GraduationCap, Bed } from 'lucide-react';
 
@@ -26,7 +25,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
       <div className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col items-center py-6 z-50">
         <div className="mb-8">
           <img 
-            src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+            src="/graduin-logo.png" 
             alt="Graduin Logo" 
             className="w-10 h-10 object-contain"
           />
@@ -53,7 +52,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-3">
           <img 
-            src="/lovable-uploads/b91853a2-3b15-4994-9915-01804d67b62e.png" 
+            src="/graduin-logo.png" 
             alt="Graduin Logo" 
             className="w-8 h-8"
           />

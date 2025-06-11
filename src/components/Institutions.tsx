@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { Search, Filter, Building, MapPin, Users, GraduationCap, ShoppingCart } from 'lucide-react';
 import ApplicationForm from './ApplicationForm';
@@ -25,7 +24,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '40,000+',
       established: '1922',
-      thumbnail: '/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 200,
       courses: ['Engineering', 'Medicine', 'Law', 'Business', 'Arts', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 30+', 'English: 50%+', 'Mathematics: 50%+'],
@@ -38,7 +37,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '29,000+',
       established: '1829',
-      thumbnail: 'bg-gradient-to-br from-green-400 to-green-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 250,
       courses: ['Medicine', 'Engineering', 'Commerce', 'Law', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 35+', 'English: 60%+', 'Mathematics: 60%+'],
@@ -51,7 +50,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '53,000+',
       established: '1908',
-      thumbnail: 'bg-gradient-to-br from-purple-400 to-purple-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 200,
       courses: ['Medicine', 'Engineering', 'Veterinary Science', 'Law', 'Business', 'Education'],
       requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
@@ -64,7 +63,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '32,000+',
       established: '1918',
-      thumbnail: 'bg-gradient-to-br from-orange-400 to-orange-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 200,
       courses: ['Agriculture', 'Engineering', 'Medicine', 'Business', 'Arts', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 30+', 'English/Afrikaans: 50%+'],
@@ -77,7 +76,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '47,000+',
       established: '2004',
-      thumbnail: 'bg-gradient-to-br from-red-400 to-red-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 180,
       courses: ['Medicine', 'Engineering', 'Law', 'Management', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
@@ -90,7 +89,7 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '8,200+',
       established: '1904',
-      thumbnail: 'bg-gradient-to-br from-indigo-400 to-indigo-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 150,
       courses: ['Journalism', 'Law', 'Pharmacy', 'Commerce', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 25+', 'English: 50%+'],
@@ -103,7 +102,7 @@ const Institutions = () => {
       type: 'University of Technology',
       students: '32,000+',
       established: '2005',
-      thumbnail: 'bg-gradient-to-br from-teal-400 to-teal-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 170,
       courses: ['Applied Sciences', 'Business', 'Engineering', 'Health Sciences', 'Informatics'],
       requirements: ['Matric Certificate', 'APS Score: 22+', 'English: 40%+'],
@@ -116,7 +115,7 @@ const Institutions = () => {
       type: 'University of Technology',
       students: '60,000+',
       established: '2004',
-      thumbnail: 'bg-gradient-to-br from-cyan-400 to-cyan-600',
+      thumbnail: '/graduin-logo.png',
       applicationFee: 160,
       courses: ['Engineering', 'Management Sciences', 'Arts & Design', 'ICT', 'Health Sciences'],
       requirements: ['Matric Certificate', 'APS Score: 20+', 'English: 40%+'],
@@ -197,7 +196,7 @@ const Institutions = () => {
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mb-4 flex items-center justify-center">
                   <img 
-                    src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+                    src="/graduin-logo.png" 
                     alt="Education" 
                     className="w-6 h-6 object-contain"
                   />
@@ -292,7 +291,7 @@ const Institutions = () => {
               <button key={index} className="p-4 text-center hover:bg-slate-50 rounded-xl transition-colors">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mx-auto mb-2 flex items-center justify-center">
                   <img 
-                    src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
+                    src="/graduin-logo.png" 
                     alt="Education" 
                     className="w-6 h-6 object-contain"
                   />
