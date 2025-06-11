@@ -1,5 +1,5 @@
 
-import { Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
+import { Facebook, Instagram, Youtube, Twitter, Send } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {

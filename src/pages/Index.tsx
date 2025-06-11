@@ -9,9 +9,11 @@ import CourseFinder from '../components/CourseFinder';
 import Accommodation from '../components/Accommodation';
 import ContactUs from '../components/ContactUs';
 import Footer from '../components/Footer';
+import Preloader from '../components/Preloader';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
+  const [showPreloader, setShowPreloader] = useState(true);
 
   useEffect(() => {
     const handlePageChange = (event: Event) => {
@@ -57,6 +59,10 @@ const Index = () => {
         return <Dashboard onPageChange={setCurrentPage} />;
     }
   };
+
+  if (showPreloader) {
+    return <Preloader onComplete={() => setShowPreloader(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-emerald-50">
