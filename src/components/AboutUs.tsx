@@ -1,5 +1,5 @@
 
-import { Users, Target, Award, Heart } from 'lucide-react';
+import { Target, Award, Heart } from 'lucide-react';
 
 const AboutUs = () => {
   const values = [
@@ -18,12 +18,6 @@ const AboutUs = () => {
       title: 'Our Impact',
       description: 'Helping thousands of students find their perfect university match and secure their place in higher education.',
     },
-  ];
-
-  const team = [
-    { name: 'Leadership Team', role: 'Founders & Executives', description: 'Experienced professionals dedicated to transforming education access.' },
-    { name: 'Technology Team', role: 'Developers & Engineers', description: 'Building innovative solutions to connect students with opportunities.' },
-    { name: 'Student Success Team', role: 'Advisors & Support', description: 'Providing guidance and support throughout the application journey.' },
   ];
 
   return (
@@ -53,21 +47,6 @@ const AboutUs = () => {
                 </div>
                 <h3 className="text-xl font-semibold text-slate-800 mb-4">{value.title}</h3>
                 <p className="text-slate-600">{value.description}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Team Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl font-bold text-slate-800 text-center mb-12">Our Team</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {team.map((member, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 card-hover">
-                <div className="w-20 h-20 bg-gradient-to-br from-purple-400 to-blue-400 rounded-full mb-6 mx-auto"></div>
-                <h3 className="text-xl font-semibold text-slate-800 mb-2 text-center">{member.name}</h3>
-                <p className="text-purple-600 font-medium mb-4 text-center">{member.role}</p>
-                <p className="text-slate-600 text-center">{member.description}</p>
               </div>
             ))}
           </div>

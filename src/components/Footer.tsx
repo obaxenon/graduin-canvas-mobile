@@ -40,7 +40,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center gap-3 mb-6">
-              <div className="w-8 h-8 bg-gradient-to-br from-purple-500 to-blue-500 rounded-lg"></div>
+              <img 
+                src="/lovable-uploads/b91853a2-3b15-4994-9915-01804d67b62e.png" 
+                alt="Graduin Logo" 
+                className="w-8 h-8"
+              />
               <span className="font-bold text-xl gradient-text">Graduin</span>
             </div>
             <p className="text-slate-600 mb-6">

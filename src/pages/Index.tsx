@@ -10,6 +10,7 @@ import Accommodation from '../components/Accommodation';
 import ContactUs from '../components/ContactUs';
 import Footer from '../components/Footer';
 import Preloader from '../components/Preloader';
+import { ApplicationCartProvider } from '../contexts/ApplicationCartContext';
 
 const Index = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -65,15 +66,17 @@ const Index = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-emerald-50">
-      <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
-      <div className="flex flex-col min-h-screen">
-        <div className="flex-grow">
-          {renderCurrentPage()}
+    <ApplicationCartProvider>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-emerald-50">
+        <Navigation currentPage={currentPage} onPageChange={setCurrentPage} />
+        <div className="flex flex-col min-h-screen">
+          <div className="flex-grow">
+            {renderCurrentPage()}
+          </div>
+          <Footer />
         </div>
-        <Footer />
       </div>
-    </div>
+    </ApplicationCartProvider>
   );
 };
 
