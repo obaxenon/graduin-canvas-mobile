@@ -1,5 +1,4 @@
-
-import { Search, Filter, Grid, List } from 'lucide-react';
+import { Search, Filter, Grid, List, Plus } from 'lucide-react';
 
 const Projects = () => {
   const projects = [
