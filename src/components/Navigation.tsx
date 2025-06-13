@@ -25,7 +25,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
       <div className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col items-center py-6 z-50">
         <div className="mb-8">
           <img 
-            src="/graduin-logo.png" 
+            src="https://i.postimg.cc/X7c1qPNp/Graduin-Icon.png" 
             alt="Graduin Logo" 
             className="w-10 h-10 object-contain"
           />
@@ -52,11 +52,10 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 z-50">
         <div className="flex items-center gap-3">
           <img 
-            src="/graduin-logo.png" 
+            src="https://i.postimg.cc/bwm6H2tP/Graduin-Logo.png" 
             alt="Graduin Logo" 
-            className="w-8 h-8"
+            className="h-8 w-auto object-contain"
           />
-          <span className="font-bold text-xl gradient-text">Graduin</span>
         </div>
         
         <button

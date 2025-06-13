@@ -1,4 +1,3 @@
-
 import { Search, MapPin, Bed, Wifi, Car, Shield, Star, Plus } from 'lucide-react';
 import { useState } from 'react';
 import AccommodationListingModal from './AccommodationListingModal';
@@ -95,7 +94,7 @@ const Accommodation = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold gradient-text mb-6">Student Accommodation</h1>
           <p className="text-lg text-slate-600 max-w-3xl mx-auto mb-8">
-            Search for affordable student accommodation near your university or college with Graduin. Find safe, comfortable, and convenient housing options.
+            Search for affordable, safe and comfortable student accommodation in South Africa, Africa and Globally with Graduin
           </p>
           
           {/* List Property Button */}
@@ -198,27 +197,13 @@ const Accommodation = () => {
               </div>
             ))}
           </div>
-        </div>
 
-        {/* Additional Properties */}
-        <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8 mb-12">
-          <h3 className="text-xl font-semibold text-slate-800 mb-4">More Properties Available</h3>
-          <div className="space-y-3 text-slate-600">
-            <p>• Auckland Johannesburg Property 2</p>
-            <p>• Auckland Johannesburg Property 3</p>
-            <p>• Doornfontein Property – Near UJ, WITS, Braamfontein; reliable & secure</p>
-            <p>• Doornfontein / Braamfontein Property – Stylish apartments, walkable to campus</p>
-            <p>• Braamfontein / Doornfontein Property 2 – Smart living solutions</p>
-            <p>• Auckland Park Rooms To-Let – Quiet house, professional/student choice</p>
-            <p>• Auckland Property (Sunbury House) – Fully equipped accommodation</p>
-            <p>• Auckland Park Johannesburg Property III – Central Auckland Park location</p>
-            <p>• Brixton Johannesburg Property II – Newly renovated, affordable</p>
-            <p>• Pritchard Place Listing – Bachelor home with open living, modern kitchen</p>
-            <p>• The Hunstanton Residence – Bachelor home, bathtub included</p>
+          {/* Show More Button */}
+          <div className="text-center mt-8">
+            <button className="button-primary">
+              View All Properties
+            </button>
           </div>
-          <button className="mt-6 button-primary">
-            View All Properties
-          </button>
         </div>
 
         {/* CTA Section */}

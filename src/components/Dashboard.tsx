@@ -1,7 +1,9 @@
-
-import { Search, ArrowRight, Building, BookOpen, Bed, FileText, Bot, Users, GraduationCap, Clock } from 'lucide-react';
+import { Search, ArrowRight, Building, BookOpen, Bed, FileText, Bot, Users, GraduationCap, Clock, ClipboardCheck } from 'lucide-react';
 import { useState } from 'react';
 import AIAssistant from './AIAssistant';
+import CareerAssessmentModal from './CareerAssessmentModal';
+import ApplicationTrackingModal from './ApplicationTrackingModal';
+import FullApplicationModal from './FullApplicationModal';
 
 interface DashboardProps {
   onPageChange: (page: string) => void;
@@ -9,9 +11,19 @@ interface DashboardProps {
 
 const Dashboard = ({ onPageChange }: DashboardProps) => {
   const [showAI, setShowAI] = useState(false);
+  const [showCareerAssessment, setShowCareerAssessment] = useState(false);
+  const [showApplicationTracking, setShowApplicationTracking] = useState(false);
+  const [showFullApplication, setShowFullApplication] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
 
   const actionCards = [
+    { 
+      id: 'career-assessment', 
+      title: 'Take Assessment Test', 
+      icon: ClipboardCheck,
+      description: 'Discover your career path',
+      isNew: true 
+    },
     { 
       id: 'course-finder', 
       title: 'Course Finder', 
@@ -47,13 +59,6 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
       description: 'Monitor progress',
       isNew: false 
     },
-    { 
-      id: 'profile', 
-      title: 'My Profile', 
-      icon: Users,
-      description: 'Manage your details',
-      isNew: false 
-    },
   ];
 
   const recentActivity = [
@@ -66,6 +71,12 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
   const handleCardClick = (id: string) => {
     if (id === 'course-finder' || id === 'institutions' || id === 'accommodation') {
       onPageChange(id);
+    } else if (id === 'career-assessment') {
+      setShowCareerAssessment(true);
+    } else if (id === 'track') {
+      setShowApplicationTracking(true);
+    } else if (id === 'application') {
+      setShowFullApplication(true);
     } else {
       console.log(`Selected ${id}`);
     }
@@ -82,11 +93,17 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
       {/* Main Header */}
       <div className="pt-20 md:pt-12 px-6 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-8 gradient-text animate-fade-in">
-          Your University Journey Starts Here
+          Launch Your Future - It Begins Here!
         </h1>
         
         {/* Navigation Tabs */}
         <div className="flex justify-center gap-6 mb-8">
+          <button 
+            onClick={() => setShowCareerAssessment(true)}
+            className="flex items-center gap-2 px-6 py-2 bg-green-100 text-green-700 rounded-full font-medium"
+          >
+            <span>📋</span> Take Assessment
+          </button>
           <button 
             onClick={() => onPageChange('course-finder')}
             className="flex items-center gap-2 px-6 py-2 bg-purple-100 text-purple-700 rounded-full font-medium"
@@ -215,8 +232,11 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
         </div>
       </div>
 
-      {/* AI Assistant */}
+      {/* Modals */}
       {showAI && <AIAssistant onClose={() => setShowAI(false)} />}
+      {showCareerAssessment && <CareerAssessmentModal onClose={() => setShowCareerAssessment(false)} />}
+      {showApplicationTracking && <ApplicationTrackingModal onClose={() => setShowApplicationTracking(false)} />}
+      {showFullApplication && <FullApplicationModal onClose={() => setShowFullApplication(false)} />}
     </div>
   );
 };

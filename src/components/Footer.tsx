@@ -39,9 +39,9 @@ const Footer = () => {
           <div>
             <div className="flex items-center gap-3 mb-6">
               <img 
-                src="/lovable-uploads/b91853a2-3b15-4994-9915-01804d67b62e.png" 
+                src="https://i.postimg.cc/bwm6H2tP/Graduin-Logo.png" 
                 alt="Graduin Logo" 
-                className="w-8 h-8"
+                className="h-8 w-auto object-contain"
               />
             </div>
             <p className="text-slate-600 mb-6">
