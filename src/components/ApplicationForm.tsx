@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { X, ShoppingCart, Trash2 } from 'lucide-react';
 import { useApplicationCart } from '../contexts/ApplicationCartContext';
@@ -25,6 +24,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ isOpen, onClose, sele
   const { cartItems, addToCart, removeFromCart, clearCart, getTotalFee } = useApplicationCart();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showPaymentForm, setShowPaymentForm] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -97,17 +97,9 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ isOpen, onClose, sele
       if (response.ok) {
         toast({
           title: "Application Submitted Successfully!",
-          description: "Your application has been submitted. Please complete your payment by clicking the link in your email address.",
+          description: "Your application has been submitted. Please proceed to payment.",
         });
-        clearCart();
-        setFormData({
-          firstName: '', lastName: '', email: '', phone: '', idNumber: '',
-          dateOfBirth: '', address: '', city: '', province: '', postalCode: '',
-          guardianName: '', guardianPhone: '', guardianEmail: '', previousSchool: '',
-          matricYear: '', matricResults: '', preferredCourse1: '', preferredCourse2: '',
-          preferredCourse3: '', motivation: '', accommodation: 'no', financialAid: 'no'
-        });
-        onClose();
+        setShowPaymentForm(true);
       }
     } catch (error) {
       toast({
@@ -120,7 +112,88 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ isOpen, onClose, sele
     }
   };
 
+  const handlePayment = () => {
+    const totalFee = cartItems.length > 0 ? getTotalFee() : selectedInstitution?.applicationFee || 0;
+    const institutionNames = cartItems.length > 0 
+      ? cartItems.map(item => item.name).join(', ')
+      : selectedInstitution?.name || '';
+
+    if (totalFee > 0) {
+      // Create and submit the payment form
+      const form = document.createElement('form');
+      form.action = 'https://www.payfast.co.za/eng/process';
+      form.method = 'post';
+      form.target = '_blank';
+
+      const fields = {
+        merchant_id: '13208346',
+        merchant_key: 'xux5xm3dc4fec',
+        return_url: 'https://graduin.app/success',
+        cancel_url: 'https://graduin.app/cancelled',
+        notify_url: 'https://graduin.app/api/payfast-notify',
+        amount: totalFee.toFixed(2),
+        item_name: `Application to: ${institutionNames}`
+      };
+
+      Object.entries(fields).forEach(([key, value]) => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+      });
+
+      document.body.appendChild(form);
+      form.submit();
+      document.body.removeChild(form);
+    } else {
+      alert("This application is free. Your form has been submitted.");
+    }
+
+    clearCart();
+    setFormData({
+      firstName: '', lastName: '', email: '', phone: '', idNumber: '',
+      dateOfBirth: '', address: '', city: '', province: '', postalCode: '',
+      guardianName: '', guardianPhone: '', guardianEmail: '', previousSchool: '',
+      matricYear: '', matricResults: '', preferredCourse1: '', preferredCourse2: '',
+      preferredCourse3: '', motivation: '', accommodation: 'no', financialAid: 'no'
+    });
+    onClose();
+  };
+
   if (!isOpen) return null;
+
+  if (showPaymentForm) {
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+          <h3 className="text-2xl font-bold text-slate-800 mb-4">Payment Required</h3>
+          <p className="text-slate-600 mb-6">
+            Your application has been submitted successfully. Please proceed to payment to complete your application.
+          </p>
+          <div className="mb-6">
+            <p className="text-lg font-semibold text-purple-600">
+              Total Amount: R{cartItems.length > 0 ? getTotalFee() : selectedInstitution?.applicationFee || 0}
+            </p>
+          </div>
+          <div className="flex gap-4">
+            <button
+              onClick={() => setShowPaymentForm(false)}
+              className="flex-1 px-6 py-3 border border-slate-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handlePayment}
+              className="flex-1 px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:shadow-lg transition-all duration-200"
+            >
+              Pay Now
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -409,7 +482,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ isOpen, onClose, sele
                   value={formData.matricResults}
                   onChange={handleInputChange}
                   placeholder="e.g., APS: 35, Mathematics: 70%, English: 65%"
-                  className="w-full px-3 py-2 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-3 py-2 border border-slate-300  rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
             </div>

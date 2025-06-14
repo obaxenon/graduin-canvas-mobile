@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import Navigation from '../components/Navigation';
 import Dashboard from '../components/Dashboard';
@@ -73,7 +72,7 @@ const Index = () => {
           <div className="flex-grow">
             {renderCurrentPage()}
           </div>
-          <Footer />
+          <Footer onPageChange={setCurrentPage} />
         </div>
       </div>
     </ApplicationCartProvider>

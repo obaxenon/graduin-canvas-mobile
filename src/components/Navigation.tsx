@@ -19,15 +19,20 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
     { id: 'contact', label: 'Contact Us', icon: Phone },
   ];
 
+  const handleLogoClick = () => {
+    onPageChange('home');
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <>
       {/* Desktop Sidebar */}
       <div className="hidden md:flex fixed left-0 top-0 h-full w-24 bg-white/80 backdrop-blur-md border-r border-slate-200 flex-col items-center py-6 z-50">
-        <div className="mb-8">
+        <div className="mb-8 cursor-pointer" onClick={handleLogoClick}>
           <img 
             src="https://i.postimg.cc/X7c1qPNp/Graduin-Icon.png" 
             alt="Graduin Logo" 
-            className="w-10 h-10 object-contain"
+            className="w-10 h-10 object-contain hover:scale-105 transition-transform"
           />
         </div>
         
@@ -50,7 +55,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
 
       {/* Mobile Header */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-white/90 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 z-50">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 cursor-pointer" onClick={handleLogoClick}>
           <img 
             src="https://i.postimg.cc/bwm6H2tP/Graduin-Logo.png" 
             alt="Graduin Logo" 
@@ -60,7 +65,7 @@ const Navigation = ({ currentPage, onPageChange }: NavigationProps) => {
         
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="p-2 hover:bg-slate-100 rounded-lg"
+          className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
         >
           {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

@@ -1,6 +1,10 @@
 import { Facebook, Instagram, Youtube, Twitter } from 'lucide-react';
 
-const Footer = () => {
+interface FooterProps {
+  onPageChange?: (page: string) => void;
+}
+
+const Footer = ({ onPageChange }: FooterProps) => {
   const mainLinks = [
     { name: 'Home', path: '/' },
     { name: 'About Us', path: '/about' },
@@ -27,8 +31,14 @@ const Footer = () => {
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     const page = e.currentTarget.getAttribute('data-page');
-    if (page) {
-      window.dispatchEvent(new CustomEvent('changePage', { detail: page }));
+    if (page && onPageChange) {
+      onPageChange(page);
+    }
+  };
+
+  const handleLogoClick = () => {
+    if (onPageChange) {
+      onPageChange('home');
     }
   };
 
@@ -37,11 +47,11 @@ const Footer = () => {
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <div className="flex items-center gap-3 mb-6">
+            <div className="flex items-center gap-3 mb-6 cursor-pointer" onClick={handleLogoClick}>
               <img 
                 src="https://i.postimg.cc/bwm6H2tP/Graduin-Logo.png" 
                 alt="Graduin Logo" 
-                className="h-8 w-auto object-contain"
+                className="h-8 w-auto object-contain hover:scale-105 transition-transform"
               />
             </div>
             <p className="text-slate-600 mb-6">

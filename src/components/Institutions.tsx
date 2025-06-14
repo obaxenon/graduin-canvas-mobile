@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Filter, Building, MapPin, Users, GraduationCap, ShoppingCart } from 'lucide-react';
+import { Search, Filter, Building, MapPin, Users, GraduationCap, ShoppingCart, University, School, BookOpen } from 'lucide-react';
 import ApplicationForm from './ApplicationForm';
 import { useApplicationCart } from '../contexts/ApplicationCartContext';
 
@@ -8,12 +8,13 @@ const Institutions = () => {
   const [selectedType, setSelectedType] = useState('');
   const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState<any>(null);
+  const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const { cartItems } = useApplicationCart();
 
   const institutionTypes = [
-    { id: 'traditional', title: 'Traditional Universities', count: '26 institutions', color: 'bg-blue-500', icon: GraduationCap },
+    { id: 'traditional', title: 'Traditional Universities', count: '26 institutions', color: 'bg-blue-500', icon: University },
     { id: 'technology', title: 'Universities of Technology', count: '15 institutions', color: 'bg-green-500', icon: Building },
-    { id: 'private', title: 'Private Institutions', count: '150+ institutions', color: 'bg-purple-500', icon: Users },
+    { id: 'private', title: 'Private Institutions', count: '150+ institutions', color: 'bg-purple-500', icon: School },
   ];
 
   const allInstitutions = [
@@ -24,11 +25,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '40,000+',
       established: '1922',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 200,
       courses: ['Engineering', 'Medicine', 'Law', 'Business', 'Arts', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 30+', 'English: 50%+', 'Mathematics: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October']
+      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
+      icon: University
     },
     { 
       id: 'uct',
@@ -37,11 +39,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '29,000+',
       established: '1829',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 250,
       courses: ['Medicine', 'Engineering', 'Commerce', 'Law', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 35+', 'English: 60%+', 'Mathematics: 60%+'],
-      deadlines: ['Main Application: 31 July', 'International: 31 May']
+      deadlines: ['Main Application: 31 July', 'International: 31 May'],
+      icon: University
     },
     { 
       id: 'up',
@@ -50,11 +53,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '53,000+',
       established: '1908',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 200,
       courses: ['Medicine', 'Engineering', 'Veterinary Science', 'Law', 'Business', 'Education'],
       requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Medicine: 31 July']
+      deadlines: ['Main Application: 30 September', 'Medicine: 31 July'],
+      icon: University
     },
     { 
       id: 'stellenbosch',
@@ -63,11 +67,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '32,000+',
       established: '1918',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 200,
       courses: ['Agriculture', 'Engineering', 'Medicine', 'Business', 'Arts', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 30+', 'English/Afrikaans: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October']
+      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
+      icon: University
     },
     { 
       id: 'ukzn',
@@ -76,11 +81,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '47,000+',
       established: '2004',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 180,
       courses: ['Medicine', 'Engineering', 'Law', 'Management', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Medicine: 31 July']
+      deadlines: ['Main Application: 30 September', 'Medicine: 31 July'],
+      icon: University
     },
     { 
       id: 'rhodes',
@@ -89,11 +95,12 @@ const Institutions = () => {
       type: 'Traditional University',
       students: '8,200+',
       established: '1904',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 150,
       courses: ['Journalism', 'Law', 'Pharmacy', 'Commerce', 'Humanities', 'Science'],
       requirements: ['Matric Certificate', 'APS Score: 25+', 'English: 50%+'],
-      deadlines: ['Main Application: 31 August', 'Late Applications: 30 September']
+      deadlines: ['Main Application: 31 August', 'Late Applications: 30 September'],
+      icon: University
     },
     {
       id: 'cput',
@@ -102,11 +109,12 @@ const Institutions = () => {
       type: 'University of Technology',
       students: '32,000+',
       established: '2005',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 170,
       courses: ['Applied Sciences', 'Business', 'Engineering', 'Health Sciences', 'Informatics'],
       requirements: ['Matric Certificate', 'APS Score: 22+', 'English: 40%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October']
+      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
+      icon: Building
     },
     {
       id: 'tut',
@@ -115,13 +123,20 @@ const Institutions = () => {
       type: 'University of Technology',
       students: '60,000+',
       established: '2004',
-      thumbnail: '/graduin-logo.png',
+      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
       applicationFee: 160,
       courses: ['Engineering', 'Management Sciences', 'Arts & Design', 'ICT', 'Health Sciences'],
       requirements: ['Matric Certificate', 'APS Score: 20+', 'English: 40%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 15 November']
+      deadlines: ['Main Application: 30 September', 'Late Applications: 15 November'],
+      icon: Building
     }
   ];
+
+  const searchSuggestions = allInstitutions.filter(institution =>
+    institution.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    institution.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    institution.courses.some(course => course.toLowerCase().includes(searchTerm.toLowerCase()))
+  );
 
   const filteredInstitutions = allInstitutions.filter(institution => {
     const matchesSearch = institution.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -136,12 +151,17 @@ const Institutions = () => {
     setIsApplicationFormOpen(true);
   };
 
+  const handleSuggestionClick = (institution: any) => {
+    setSearchTerm(institution.name);
+    setShowSearchSuggestions(false);
+  };
+
   return (
     <div className="flex-1 md:ml-24 min-h-screen pt-20 md:pt-12 px-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
-        <div className="mb-8 flex items-center justify-between">
-          <div>
+        <div className="mb-8 flex flex-col md:flex-row md:items-center justify-between">
+          <div className="mb-4 md:mb-0">
             <h1 className="text-3xl font-bold gradient-text mb-4">South African Institutions</h1>
             <p className="text-slate-600">Discover and apply to universities and institutions across South Africa through our comprehensive platform</p>
           </div>
@@ -161,9 +181,29 @@ const Institutions = () => {
               type="text"
               placeholder="Search institutions by name, location, or program..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowSearchSuggestions(e.target.value.length > 0);
+              }}
+              onFocus={() => searchTerm.length > 0 && setShowSearchSuggestions(true)}
               className="w-full pl-12 pr-4 py-3 rounded-xl border border-slate-200 bg-white focus:outline-none focus:ring-2 focus:ring-purple-500"
             />
+            
+            {/* Search Suggestions */}
+            {showSearchSuggestions && searchSuggestions.length > 0 && (
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-lg border border-slate-200 z-50 max-h-60 overflow-y-auto">
+                {searchSuggestions.slice(0, 5).map((institution, index) => (
+                  <button
+                    key={index}
+                    onClick={() => handleSuggestionClick(institution)}
+                    className="w-full px-4 py-3 text-left hover:bg-slate-50 border-b border-slate-100 last:border-b-0 transition-colors"
+                  >
+                    <div className="font-medium text-slate-800">{institution.name}</div>
+                    <div className="text-sm text-slate-500">{institution.location} • {institution.type}</div>
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
           
           <div className="flex gap-2">
@@ -195,11 +235,7 @@ const Institutions = () => {
                 onClick={() => setSelectedType(type.id)}
               >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mb-4 flex items-center justify-center">
-                  <img 
-                    src="/graduin-logo.png" 
-                    alt="Education" 
-                    className="w-6 h-6 object-contain"
-                  />
+                  <type.icon className="text-purple-600" size={24} />
                 </div>
                 <h3 className="font-semibold text-slate-800 mb-2">{type.title}</h3>
                 <p className="text-slate-500 text-sm">{type.count}</p>
@@ -209,7 +245,7 @@ const Institutions = () => {
         </div>
 
         {/* Search Results */}
-        <div className="mb-12">
+        <div className="mb-12" id="results-section">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-800">
               {searchTerm || selectedType ? `Search Results (${filteredInstitutions.length})` : 'Featured Institutions'}
@@ -219,6 +255,7 @@ const Institutions = () => {
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedType('');
+                  setShowSearchSuggestions(false);
                 }}
                 className="text-purple-600 hover:text-purple-700 font-medium"
               >
@@ -230,12 +267,15 @@ const Institutions = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredInstitutions.map((institution, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer">
-                <div className="h-32 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center">
+                <div className="h-32 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center relative">
                   <img 
                     src={institution.thumbnail} 
                     alt={institution.name}
                     className="w-16 h-16 object-contain"
                   />
+                  <div className="absolute top-3 right-3">
+                    <institution.icon className="text-purple-600" size={20} />
+                  </div>
                 </div>
                 <div className="p-6">
                   <h3 className="font-semibold text-slate-800 mb-2">{institution.name}</h3>
@@ -274,6 +314,7 @@ const Institutions = () => {
                 onClick={() => {
                   setSearchTerm('');
                   setSelectedType('');
+                  setShowSearchSuggestions(false);
                 }}
                 className="mt-4 text-purple-600 hover:text-purple-700 font-medium"
               >
@@ -290,11 +331,7 @@ const Institutions = () => {
             {['Student Accommodation', 'Course Finder', 'Private Institutions', 'Traditional Universities', 'Universities of Technology'].map((link, index) => (
               <button key={index} className="p-4 text-center hover:bg-slate-50 rounded-xl transition-colors">
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mx-auto mb-2 flex items-center justify-center">
-                  <img 
-                    src="/graduin-logo.png" 
-                    alt="Education" 
-                    className="w-6 h-6 object-contain"
-                  />
+                  <BookOpen className="text-purple-600" size={20} />
                 </div>
                 <span className="text-sm text-slate-600 font-medium">{link}</span>
               </button>

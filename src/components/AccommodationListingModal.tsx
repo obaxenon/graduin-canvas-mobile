@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { X, Check, Upload, MapPin, Star } from 'lucide-react';
 
@@ -34,6 +33,7 @@ interface FormData {
 
 const AccommodationListingModal = ({ isOpen, onClose }: AccommodationListingModalProps) => {
   const [currentStep, setCurrentStep] = useState(1);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     fullName: '',
     email: '',
@@ -135,14 +135,57 @@ const AccommodationListingModal = ({ isOpen, onClose }: AccommodationListingModa
         body: formSubmitData
       });
 
-      // Show success message
-      alert('Your property listing application has been submitted successfully! Our team will review it and it will go live upon payment confirmation. You will receive an email with payment details shortly.');
-      onClose();
+      setShowSuccess(true);
     } catch (error) {
       console.error('Error submitting form:', error);
       alert('There was an error submitting your application. Please try again.');
     }
   };
+
+  const handlePaymentRedirect = () => {
+    const paymentUrls = {
+      basic: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Basic+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=149&subscription_type=1&recurring_amount=149&cycles=0&frequency=3',
+      standard: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Standard+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=349&subscription_type=1&recurring_amount=349&cycles=0&frequency=3',
+      premium: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Premium+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=699&subscription_type=1&recurring_amount=699&cycles=0&frequency=3'
+    };
+
+    if (formData.selectedTier && paymentUrls[formData.selectedTier]) {
+      window.open(paymentUrls[formData.selectedTier], '_blank');
+    }
+    
+    onClose();
+  };
+
+  if (showSuccess) {
+    return (
+      <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+          <div className="p-8 text-center">
+            <div className="w-16 h-16 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+              <Check className="text-green-500" size={32} />
+            </div>
+            <h3 className="text-2xl font-bold text-slate-800 mb-4">Application Submitted!</h3>
+            <p className="text-slate-600 mb-6">Your property listing application has been submitted successfully! Please proceed to payment to activate your listing.</p>
+            
+            <div className="space-y-3">
+              <button
+                onClick={handlePaymentRedirect}
+                className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white py-3 rounded-xl font-medium hover:shadow-lg transition-all duration-200"
+              >
+                Proceed to Payment (R{formData.selectedTier ? tiers.find(t => t.id === formData.selectedTier)?.price : 0})
+              </button>
+              <button
+                onClick={onClose}
+                className="w-full border border-slate-200 text-slate-600 py-3 rounded-xl font-medium hover:bg-slate-50 transition-colors"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const renderStep = () => {
     switch (currentStep) {
