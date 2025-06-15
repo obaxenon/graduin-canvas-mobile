@@ -194,7 +194,7 @@ Selected Institutions: ${formData.selectedInstitutions.join(', ')}
 Best regards,
 ${formData.firstName} ${formData.lastName}`);
     
-    window.open(`mailto:graduinstar@gmail.com?subject=${subject}&body=${body}`);
+    window.open(`mailto:submissions@graduin.app?subject=${subject}&body=${body}`);
     setShowSuccess(false);
     onClose();
   };

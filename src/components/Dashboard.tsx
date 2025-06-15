@@ -1,5 +1,5 @@
 import { Search, ArrowRight, Building, BookOpen, Bed, FileText, Bot, Users, GraduationCap, Clock, ClipboardCheck, Star } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AIAssistant from './AIAssistant';
 import CareerAssessmentModal from './CareerAssessmentModal';
 import ApplicationTrackingModal from './ApplicationTrackingModal';
@@ -18,6 +18,36 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
   const [selectedProperty, setSelectedProperty] = useState<any>(null);
+  const [featuredProperties, setFeaturedProperties] = useState<any[]>([]);
+  const [currentLogoIndex, setCurrentLogoIndex] = useState(0);
+
+  const logos = [
+    'https://i.postimg.cc/SRHmN1Qg/img-702.png',
+    'https://i.postimg.cc/Hs7pPm3R/img-987.png',
+    'https://i.postimg.cc/yxDVKCKJ/img-cnbc-africa.png',
+    'https://i.postimg.cc/HWNY2n0b/img-disrupt-africa.png',
+    'https://i.postimg.cc/9MFmxqNY/img-enca.png',
+    'https://i.postimg.cc/9fBXtB1f/img-hopealive.png',
+    'https://i.postimg.cc/B6YqRQr9/img-vuuqa.png'
+  ];
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Fetch properties from JSON file
+    fetch('/graduin-properties.json')
+      .then(response => response.json())
+      .then(data => setFeaturedProperties(data.slice(0, 4)))
+      .catch(error => console.error('Error fetching properties:', error));
+
+    // Logo carousel auto-rotation
+    const logoInterval = setInterval(() => {
+      setCurrentLogoIndex(prev => (prev + 4) % logos.length);
+    }, 3000);
+
+    return () => clearInterval(logoInterval);
+  }, []);
 
   const actionCards = [
     { 
@@ -55,53 +85,6 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
       description: 'Get instant help',
       isNew: true 
     },
-  ];
-
-  const featuredProperties = [
-    {
-      id: 1,
-      title: '9 Guildford Street Brixton',
-      location: 'Johannesburg, 2092',
-      price: 'R3,500/month',
-      features: ['Furnished', 'Wi-Fi', 'Security'],
-      rating: 4.2,
-      image: 'bg-gradient-to-br from-blue-400 to-blue-600',
-      url: 'https://graduin.com/blog/2020/12/05/9-guildford-street-brixton-johannesburg-2092/',
-      isPremium: true
-    },
-    {
-      id: 2,
-      title: '40A Fulham Road Brixton',
-      location: 'Johannesburg, 2092',
-      price: 'R2,800/month',
-      features: ['Shared Kitchen', 'Study Area', 'Laundry'],
-      rating: 4.5,
-      image: 'bg-gradient-to-br from-green-400 to-green-600',
-      url: 'https://graduin.com/blog/2020/12/05/40a-fulham-road-brixton-johannesburg-2092/',
-      isPremium: true
-    },
-    {
-      id: 3,
-      title: '18 Bernard Street Sophiatown',
-      location: 'Johannesburg',
-      price: 'R4,200/month',
-      features: ['Fully Furnished', 'Reception', '24/7 Security'],
-      rating: 4.8,
-      image: 'bg-gradient-to-br from-purple-400 to-purple-600',
-      url: 'https://graduin.com/blog/2020/12/05/18-bernard-street-sophiatown-johannesburg/',
-      isPremium: true
-    },
-    {
-      id: 4,
-      title: 'North Cliff Terrace Complex',
-      location: 'Johannesburg',
-      price: 'R8,300/month',
-      features: ['3 Bedroom', 'Pool', 'Parking', 'Entertainment Area'],
-      rating: 4.6,
-      image: 'bg-gradient-to-br from-orange-400 to-orange-600',
-      url: 'https://graduin.com/blog/2020/12/05/north-cliff-terrace-complex/',
-      isPremium: true
-    }
   ];
 
   const searchSuggestions = [
@@ -157,6 +140,14 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
     setSelectedProperty(property);
   };
 
+  const getCurrentLogos = () => {
+    const result = [];
+    for (let i = 0; i < 4; i++) {
+      result.push(logos[(currentLogoIndex + i) % logos.length]);
+    }
+    return result;
+  };
+
   return (
     <div className="flex-1 md:ml-24 min-h-screen">
       {/* Main Header */}
@@ -193,7 +184,11 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
           </button>
           <button 
             onClick={() => setShowAI(true)}
-            className="flex items-center gap-2 px-3 md:px-4 py-2 text-slate-600 hover:text-purple-600 transition-colors text-sm md:text-base"
+            className="relative flex items-center gap-2 px-3 md:px-4 py-2 text-slate-600 hover:text-purple-600 transition-colors text-sm md:text-base border-2 border-transparent bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 bg-clip-border rounded-full"
+            style={{
+              background: 'linear-gradient(white, white) padding-box, linear-gradient(45deg, #8b5cf6, #ec4899, #3b82f6) border-box',
+              boxShadow: '0 0 20px rgba(139, 92, 246, 0.3)'
+            }}
           >
             <span className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-2 py-0.5 rounded text-xs font-bold">New</span>
             AI Assistant
@@ -246,12 +241,17 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
       <div className="px-6 mb-12">
         <div className="max-w-6xl mx-auto text-center">
           <h2 className="text-xl font-semibold text-slate-600 mb-6">As Featured On</h2>
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <img 
-              src="/lovable-uploads/db5b84cc-61c5-4506-ac51-53592238d36e.png" 
-              alt="As Featured On" 
-              className="w-full max-w-4xl mx-auto h-auto object-contain"
-            />
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 overflow-hidden">
+            <div className="flex items-center justify-center gap-8 transition-transform duration-1000 ease-in-out">
+              {getCurrentLogos().map((logo, index) => (
+                <img 
+                  key={`${currentLogoIndex}-${index}`}
+                  src={logo} 
+                  alt={`Featured Logo ${index + 1}`} 
+                  className="h-12 w-auto object-contain opacity-70 hover:opacity-100 transition-opacity"
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -298,28 +298,24 @@ const Dashboard = ({ onPageChange }: DashboardProps) => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProperties.map((property) => (
               <div 
-                key={property.id} 
+                key={property.title} 
                 className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer"
                 onClick={() => handlePropertyClick(property)}
               >
-                <div className={`aspect-[4/3] ${property.image} flex items-center justify-center relative`}>
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl"></div>
-                  {property.isPremium && (
+                <div className="aspect-[4/3] bg-cover bg-center relative" style={{backgroundImage: `url(${property.image})`}}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  {property.tag && (
                     <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-full text-xs font-bold flex items-center gap-1">
                       <Star size={12} fill="currentColor" />
-                      Premium
+                      {property.tag}
                     </div>
                   )}
                 </div>
                 <div className="p-4">
                   <h3 className="font-medium text-slate-800 mb-1 text-sm">{property.title}</h3>
-                  <p className="text-xs text-slate-500 mb-2">{property.location}</p>
+                  <p className="text-xs text-slate-500 mb-2">{property.address}</p>
                   <div className="flex items-center justify-between">
                     <span className="text-sm font-bold text-purple-600">{property.price}</span>
-                    <div className="flex items-center gap-1 text-yellow-500">
-                      <Star size={12} fill="currentColor" />
-                      <span className="text-xs text-slate-600">{property.rating}</span>
-                    </div>
                   </div>
                 </div>
               </div>

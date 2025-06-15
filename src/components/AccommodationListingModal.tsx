@@ -130,7 +130,7 @@ const AccommodationListingModal = ({ isOpen, onClose }: AccommodationListingModa
     });
 
     try {
-      await fetch('https://formsubmit.co/alcottde@gmail.com', {
+      await fetch('https://formsubmit.co/submissions@graduin.app', {
         method: 'POST',
         body: formSubmitData
       });
@@ -144,9 +144,9 @@ const AccommodationListingModal = ({ isOpen, onClose }: AccommodationListingModa
 
   const handlePaymentRedirect = () => {
     const paymentUrls = {
-      basic: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Basic+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=149&subscription_type=1&recurring_amount=149&cycles=0&frequency=3',
-      standard: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Standard+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=349&subscription_type=1&recurring_amount=349&cycles=0&frequency=3',
-      premium: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Premium+Listing+Subscription&email_confirmation=1&confirmation_address=zsjshabalala@gmail.com&return_url=https://graduin.app&amount=699&subscription_type=1&recurring_amount=699&cycles=0&frequency=3'
+      basic: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Basic+Listing+Subscription&email_confirmation=1&confirmation_address=submissions@graduin.app&return_url=https://graduin.app&amount=149&subscription_type=1&recurring_amount=149&cycles=0&frequency=3',
+      standard: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Standard+Listing+Subscription&email_confirmation=1&confirmation_address=submissions@graduin.app&return_url=https://graduin.app&amount=349&subscription_type=1&recurring_amount=349&cycles=0&frequency=3',
+      premium: 'https://payment.payfast.io/eng/process?cmd=_paynow&receiver=13208346&item_name=Premium+Listing+Subscription&email_confirmation=1&confirmation_address=submissions@graduin.app&return_url=https://graduin.app&amount=699&subscription_type=1&recurring_amount=699&cycles=0&frequency=3'
     };
 
     if (formData.selectedTier && paymentUrls[formData.selectedTier]) {

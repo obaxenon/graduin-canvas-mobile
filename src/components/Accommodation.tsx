@@ -1,84 +1,23 @@
-import { Search, MapPin, Bed, Wifi, Car, Shield, Star, Plus } from 'lucide-react';
-import { useState } from 'react';
+import { Search, MapPin, Bed, Wifi, Car, Shield, Plus } from 'lucide-react';
+import { useState, useEffect } from 'react';
 import AccommodationListingModal from './AccommodationListingModal';
+import PropertyModal from './PropertyModal';
 
 const Accommodation = () => {
   const [isListingModalOpen, setIsListingModalOpen] = useState(false);
+  const [properties, setProperties] = useState<any[]>([]);
+  const [selectedProperty, setSelectedProperty] = useState<any>(null);
 
-  const listings = [
-    {
-      title: '9 Guildford Street Brixton Johannesburg 2092',
-      description: 'Minutes from UJ APK and Brixton Shopping Centre.',
-      price: 'R3,500/month',
-      features: ['Furnished', 'Wi-Fi', 'Security'],
-      rating: 4.2,
-      image: 'bg-gradient-to-br from-blue-400 to-blue-600'
-    },
-    {
-      title: '40A Fulham road Brixton Johannesburg 2092',
-      description: 'Student commune, single or sharing room options.',
-      price: 'R2,800/month',
-      features: ['Shared Kitchen', 'Study Area', 'Laundry'],
-      rating: 4.5,
-      image: 'bg-gradient-to-br from-green-400 to-green-600'
-    },
-    {
-      title: '18 Bernard Street Sophiatown Johannesburg',
-      description: 'Double-storey fully furnished with reception area.',
-      price: 'R4,200/month',
-      features: ['Fully Furnished', 'Reception', '24/7 Security'],
-      rating: 4.8,
-      image: 'bg-gradient-to-br from-purple-400 to-purple-600'
-    },
-    {
-      title: 'North cliff Terrace Complex',
-      description: '3 BR/2 BA, R8 300 p/m; includes parking, pool, entertainment area.',
-      price: 'R8,300/month',
-      features: ['3 Bedroom', 'Pool', 'Parking', 'Entertainment Area'],
-      rating: 4.6,
-      image: 'bg-gradient-to-br from-orange-400 to-orange-600'
-    },
-    {
-      title: '89 Collins Street Brixton Johannesburg 2092',
-      description: 'Fully furnished, secured commune.',
-      price: 'R3,200/month',
-      features: ['Fully Furnished', 'Security', 'Shared Facilities'],
-      rating: 4.3,
-      image: 'bg-gradient-to-br from-red-400 to-red-600'
-    },
-    {
-      title: 'Westedene Property',
-      description: '3 BR house, R12k incl. utilities & Wi-Fi.',
-      price: 'R12,000/month',
-      features: ['3 Bedroom', 'Utilities Included', 'Wi-Fi', 'House'],
-      rating: 4.7,
-      image: 'bg-gradient-to-br from-indigo-400 to-indigo-600'
-    },
-    {
-      title: 'Auckland Johannesburg Property 1',
-      description: 'Safe accommodation near UJ, WITS, Rosbank College, Boston City.',
-      price: 'R3,800/month',
-      features: ['Near Universities', 'Safe Area', 'Transport Links'],
-      rating: 4.4,
-      image: 'bg-gradient-to-br from-pink-400 to-pink-600'
-    },
-    {
-      title: 'Johannesburg Property',
-      description: 'Furnished, uncapped Wi-Fi, parking, utilities, caretaker, weekly cleaning.',
-      price: 'R4,500/month',
-      features: ['Furnished', 'Uncapped Wi-Fi', 'Parking', 'Cleaning Service'],
-      rating: 4.9,
-      image: 'bg-gradient-to-br from-teal-400 to-teal-600'
-    },
-    {
-      title: 'Melody Complex Property',
-      description: '2 BR apt, built-in cupboards.',
-      price: 'R5,200/month',
-      features: ['2 Bedroom', 'Built-in Cupboards', 'Apartment'],
-      rating: 4.1,
-      image: 'bg-gradient-to-br from-yellow-400 to-yellow-600'
-    },
-  ];
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Fetch properties from JSON file
+    fetch('/graduin-properties.json')
+      .then(response => response.json())
+      .then(data => setProperties(data))
+      .catch(error => console.error('Error fetching properties:', error));
+  }, []);
 
   const amenities = [
     { icon: Wifi, label: 'Wi-Fi' },
@@ -86,6 +25,15 @@ const Accommodation = () => {
     { icon: Shield, label: 'Security' },
     { icon: Bed, label: 'Furnished' },
   ];
+
+  const handlePropertyClick = (property: any) => {
+    setSelectedProperty(property);
+  };
+
+  const handlePersonalAssistance = () => {
+    // Navigate to contact page
+    window.dispatchEvent(new CustomEvent('changePage', { detail: 'contact-us' }));
+  };
 
   return (
     <div className="flex-1 md:ml-24 min-h-screen pt-20 md:pt-12 px-6">
@@ -158,29 +106,34 @@ const Accommodation = () => {
         <div className="mb-12">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-800">Available Properties</h2>
-            <p className="text-slate-600">{listings.length} properties found</p>
+            <p className="text-slate-600">{properties.length} properties found</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {listings.map((listing, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover">
-                <div className={`h-48 ${listing.image} flex items-center justify-center`}>
-                  <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-xl"></div>
+            {properties.map((property, index) => (
+              <div 
+                key={index} 
+                className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer"
+                onClick={() => handlePropertyClick(property)}
+              >
+                <div className="h-48 bg-cover bg-center relative" style={{backgroundImage: `url(${property.image})`}}>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                  {property.tag && (
+                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white px-3 py-1 rounded-full text-xs font-bold">
+                      {property.tag}
+                    </div>
+                  )}
                 </div>
                 
                 <div className="p-6">
                   <div className="flex items-start justify-between mb-3">
-                    <h3 className="font-semibold text-slate-800 text-sm leading-tight">{listing.title}</h3>
-                    <div className="flex items-center gap-1 text-yellow-500">
-                      <Star size={14} fill="currentColor" />
-                      <span className="text-xs text-slate-600">{listing.rating}</span>
-                    </div>
+                    <h3 className="font-semibold text-slate-800 text-sm leading-tight">{property.title}</h3>
                   </div>
                   
-                  <p className="text-slate-600 text-sm mb-4">{listing.description}</p>
+                  <p className="text-slate-600 text-sm mb-4">{property.description}</p>
                   
                   <div className="flex flex-wrap gap-2 mb-4">
-                    {listing.features.slice(0, 3).map((feature, featureIndex) => (
+                    {property.features?.slice(0, 3).map((feature: string, featureIndex: number) => (
                       <span key={featureIndex} className="bg-purple-100 text-purple-700 px-2 py-1 rounded-lg text-xs">
                         {feature}
                       </span>
@@ -188,7 +141,7 @@ const Accommodation = () => {
                   </div>
                   
                   <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-purple-600">{listing.price}</span>
+                    <span className="text-lg font-bold text-purple-600">{property.price}</span>
                     <button className="bg-gradient-to-r from-purple-500 to-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium hover:shadow-lg transition-all duration-200">
                       View Details
                     </button>
@@ -210,7 +163,10 @@ const Accommodation = () => {
         <div className="text-center bg-gradient-to-r from-purple-500 to-blue-500 rounded-3xl p-12 text-white">
           <h2 className="text-3xl font-bold mb-4">Can't Find What You're Looking For?</h2>
           <p className="text-lg mb-8 opacity-90">Let us help you find the perfect accommodation. Our team will match you with suitable properties.</p>
-          <button className="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+          <button 
+            onClick={handlePersonalAssistance}
+            className="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200"
+          >
             Get Personal Assistance
           </button>
         </div>
@@ -221,6 +177,14 @@ const Accommodation = () => {
         isOpen={isListingModalOpen}
         onClose={() => setIsListingModalOpen(false)}
       />
+
+      {/* Property Modal */}
+      {selectedProperty && (
+        <PropertyModal 
+          property={selectedProperty} 
+          onClose={() => setSelectedProperty(null)} 
+        />
+      )}
     </div>
   );
 };
