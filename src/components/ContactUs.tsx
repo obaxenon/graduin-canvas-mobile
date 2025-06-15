@@ -1,32 +1,60 @@
 import { Phone, Mail, MapPin, Clock, Send } from 'lucide-react';
+import { useState, useEffect } from 'react';
 
 const ContactUs = () => {
-  const contactInfo = [
-    {
-      icon: Phone,
-      title: 'Phone',
-      details: ['+27 11 123 4567', '+27 21 987 6543'],
-      description: 'Call us during business hours'
-    },
-    {
-      icon: Mail,
-      title: 'Email',
-      details: ['support@graduin.com', 'info@graduin.com'],
-      description: 'We respond within 24 hours'
-    },
-    {
-      icon: MapPin,
-      title: 'Office',
-      details: ['123 University Street', 'Johannesburg, 2000'],
-      description: 'Visit us for in-person support'
-    },
-    {
-      icon: Clock,
-      title: 'Hours',
-      details: ['Mon - Fri: 8:00 AM - 6:00 PM', 'Sat: 9:00 AM - 2:00 PM'],
-      description: 'Closed on Sundays and public holidays'
+  const [formData, setFormData] = useState({
+    nameSurname: '',
+    phoneNumber: '',
+    emailAddress: '',
+    physicalAddress: '',
+    institutionName: ''
+  });
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      const response = await fetch('https://formsubmit.co/submissions@graduin.app', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          _subject: 'New Contact Form Submission - Graduin',
+          _captcha: 'false'
+        })
+      });
+
+      if (response.ok) {
+        alert('Thank you for your message! We will get back to you soon.');
+        setFormData({
+          nameSurname: '',
+          phoneNumber: '',
+          emailAddress: '',
+          physicalAddress: '',
+          institutionName: ''
+        });
+      } else {
+        alert('There was an error sending your message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('There was an error sending your message. Please try again.');
     }
-  ];
+  };
 
   return (
     <div className="flex-1 md:ml-16 min-h-screen pt-20 md:pt-12 px-6">
@@ -46,86 +74,74 @@ const ContactUs = () => {
           </p>
         </div>
 
-        {/* Contact Information */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          {contactInfo.map((info, index) => (
-            <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 card-hover">
-              <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl flex items-center justify-center mb-4">
-                <info.icon className="text-purple-600" size={24} />
-              </div>
-              <h3 className="font-semibold text-slate-800 mb-3">{info.title}</h3>
-              <div className="space-y-1 mb-3">
-                {info.details.map((detail, detailIndex) => (
-                  <p key={detailIndex} className="text-slate-600 text-sm">{detail}</p>
-                ))}
-              </div>
-              <p className="text-xs text-slate-500">{info.description}</p>
-            </div>
-          ))}
-        </div>
-
         {/* Contact Form */}
         <div className="max-w-2xl mx-auto">
           <div className="bg-white rounded-3xl shadow-sm border border-slate-200 p-8">
             <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Send us a Message</h2>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">First Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="Enter your first name"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Last Name</label>
-                  <input
-                    type="text"
-                    className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                    placeholder="Enter your last name"
-                  />
-                </div>
-              </div>
-
+            <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Email Address</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Name & Surname *</label>
                 <input
-                  type="email"
+                  type="text"
+                  name="nameSurname"
+                  value={formData.nameSurname}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
-                  placeholder="Enter your email"
+                  placeholder="Enter your full name"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Phone Number *</label>
                 <input
                   type="tel"
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
+                  onChange={handleInputChange}
+                  required
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
                   placeholder="Enter your phone number"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Subject</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500">
-                  <option>Select a topic</option>
-                  <option>Application Support</option>
-                  <option>Technical Issues</option>
-                  <option>Account Help</option>
-                  <option>General Inquiry</option>
-                  <option>Accommodation</option>
-                  <option>Course Information</option>
-                </select>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  name="emailAddress"
+                  value={formData.emailAddress}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Enter your email address"
+                />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Message</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Physical Address *</label>
                 <textarea
-                  rows={4}
+                  name="physicalAddress"
+                  value={formData.physicalAddress}
+                  onChange={handleInputChange}
+                  required
+                  rows={3}
                   className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500 resize-none"
-                  placeholder="Tell us how we can help you..."
+                  placeholder="Enter your physical address"
                 ></textarea>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">Name of Institution You Plan on Attending *</label>
+                <input
+                  type="text"
+                  name="institutionName"
+                  value={formData.institutionName}
+                  onChange={handleInputChange}
+                  required
+                  className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  placeholder="Enter the institution name"
+                />
               </div>
 
               <button type="submit" className="w-full button-primary">

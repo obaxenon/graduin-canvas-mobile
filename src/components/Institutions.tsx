@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Search, Filter, Building, MapPin, Users, GraduationCap, ShoppingCart, University, School, BookOpen } from 'lucide-react';
 import ApplicationForm from './ApplicationForm';
 import { useApplicationCart } from '../contexts/ApplicationCartContext';
@@ -9,7 +9,19 @@ const Institutions = () => {
   const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
   const [selectedInstitution, setSelectedInstitution] = useState<any>(null);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [institutions, setInstitutions] = useState<any[]>([]);
   const { cartItems } = useApplicationCart();
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+    
+    // Fetch institutions from JSON file
+    fetch('/graduin-instituions.json')
+      .then(response => response.json())
+      .then(data => setInstitutions(data))
+      .catch(error => console.error('Error fetching institutions:', error));
+  }, []);
 
   const institutionTypes = [
     { id: 'traditional', title: 'Traditional Universities', count: '26 institutions', color: 'bg-blue-500', icon: University },
@@ -17,143 +29,63 @@ const Institutions = () => {
     { id: 'private', title: 'Private Institutions', count: '150+ institutions', color: 'bg-purple-500', icon: School },
   ];
 
-  const allInstitutions = [
-    { 
-      id: 'wits',
-      name: 'University of the Witwatersrand',
-      location: 'Johannesburg, Gauteng',
-      type: 'Traditional University',
-      students: '40,000+',
-      established: '1922',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 200,
-      courses: ['Engineering', 'Medicine', 'Law', 'Business', 'Arts', 'Science'],
-      requirements: ['Matric Certificate', 'APS Score: 30+', 'English: 50%+', 'Mathematics: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
-      icon: University
-    },
-    { 
-      id: 'uct',
-      name: 'University of Cape Town',
-      location: 'Cape Town, Western Cape',
-      type: 'Traditional University',
-      students: '29,000+',
-      established: '1829',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 250,
-      courses: ['Medicine', 'Engineering', 'Commerce', 'Law', 'Humanities', 'Science'],
-      requirements: ['Matric Certificate', 'APS Score: 35+', 'English: 60%+', 'Mathematics: 60%+'],
-      deadlines: ['Main Application: 31 July', 'International: 31 May'],
-      icon: University
-    },
-    { 
-      id: 'up',
-      name: 'University of Pretoria',
-      location: 'Pretoria, Gauteng',
-      type: 'Traditional University',
-      students: '53,000+',
-      established: '1908',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 200,
-      courses: ['Medicine', 'Engineering', 'Veterinary Science', 'Law', 'Business', 'Education'],
-      requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Medicine: 31 July'],
-      icon: University
-    },
-    { 
-      id: 'stellenbosch',
-      name: 'Stellenbosch University',
-      location: 'Stellenbosch, Western Cape',
-      type: 'Traditional University',
-      students: '32,000+',
-      established: '1918',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 200,
-      courses: ['Agriculture', 'Engineering', 'Medicine', 'Business', 'Arts', 'Science'],
-      requirements: ['Matric Certificate', 'APS Score: 30+', 'English/Afrikaans: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
-      icon: University
-    },
-    { 
-      id: 'ukzn',
-      name: 'University of KwaZulu-Natal',
-      location: 'Durban, KwaZulu-Natal',
-      type: 'Traditional University',
-      students: '47,000+',
-      established: '2004',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 180,
-      courses: ['Medicine', 'Engineering', 'Law', 'Management', 'Humanities', 'Science'],
-      requirements: ['Matric Certificate', 'APS Score: 28+', 'English: 50%+'],
-      deadlines: ['Main Application: 30 September', 'Medicine: 31 July'],
-      icon: University
-    },
-    { 
-      id: 'rhodes',
-      name: 'Rhodes University',
-      location: 'Grahamstown, Eastern Cape',
-      type: 'Traditional University',
-      students: '8,200+',
-      established: '1904',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 150,
-      courses: ['Journalism', 'Law', 'Pharmacy', 'Commerce', 'Humanities', 'Science'],
-      requirements: ['Matric Certificate', 'APS Score: 25+', 'English: 50%+'],
-      deadlines: ['Main Application: 31 August', 'Late Applications: 30 September'],
-      icon: University
-    },
-    {
-      id: 'cput',
-      name: 'Cape Peninsula University of Technology',
-      location: 'Cape Town, Western Cape',
-      type: 'University of Technology',
-      students: '32,000+',
-      established: '2005',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 170,
-      courses: ['Applied Sciences', 'Business', 'Engineering', 'Health Sciences', 'Informatics'],
-      requirements: ['Matric Certificate', 'APS Score: 22+', 'English: 40%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 31 October'],
-      icon: Building
-    },
-    {
-      id: 'tut',
-      name: 'Tshwane University of Technology',
-      location: 'Pretoria, Gauteng',
-      type: 'University of Technology',
-      students: '60,000+',
-      established: '2004',
-      thumbnail: 'https://i.postimg.cc/qBWMRGX3/education.png',
-      applicationFee: 160,
-      courses: ['Engineering', 'Management Sciences', 'Arts & Design', 'ICT', 'Health Sciences'],
-      requirements: ['Matric Certificate', 'APS Score: 20+', 'English: 40%+'],
-      deadlines: ['Main Application: 30 September', 'Late Applications: 15 November'],
-      icon: Building
-    }
-  ];
-
-  const searchSuggestions = allInstitutions.filter(institution =>
+  const searchSuggestions = institutions.filter(institution =>
     institution.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    institution.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    institution.courses.some(course => course.toLowerCase().includes(searchTerm.toLowerCase()))
+    institution.categories.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const filteredInstitutions = allInstitutions.filter(institution => {
+  const filteredInstitutions = institutions.filter(institution => {
     const matchesSearch = institution.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         institution.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         institution.courses.some(course => course.toLowerCase().includes(searchTerm.toLowerCase()));
-    const matchesType = !selectedType || institution.type.toLowerCase().includes(selectedType.toLowerCase());
+                         institution.categories.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         institution.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = !selectedType || institution.categories.toLowerCase().includes(selectedType.toLowerCase());
     return matchesSearch && matchesType;
   });
 
   const handleViewDetails = (institution: any) => {
-    setSelectedInstitution(institution);
+    // Convert institution data to match expected format
+    const formattedInstitution = {
+      id: institution.name.toLowerCase().replace(/\s+/g, '-'),
+      name: institution.name,
+      location: 'South Africa', // Default location
+      type: institution.categories.replace('Category:', '').trim(),
+      students: '10,000+', // Default student count
+      established: '1900', // Default establishment year
+      applicationFee: parseFloat(institution.price.replace('R', '').replace(',', '')) || 0,
+      courses: institution.description.split('Qualifications Offered Summary List:')[1]?.split(/[A-Z][a-z]+ [A-Z]/) || ['Various Programs'],
+      requirements: ['Matric Certificate', 'Application Form', 'Supporting Documents'],
+      deadlines: ['Application Deadline: Check with institution']
+    };
+    
+    setSelectedInstitution(formattedInstitution);
     setIsApplicationFormOpen(true);
   };
 
   const handleSuggestionClick = (institution: any) => {
     setSearchTerm(institution.name);
     setShowSearchSuggestions(false);
+  };
+
+  const handleQuickAccessClick = (item: string) => {
+    switch (item) {
+      case 'Student Accommodation':
+        window.dispatchEvent(new CustomEvent('changePage', { detail: 'accommodation' }));
+        break;
+      case 'Course Finder':
+        window.dispatchEvent(new CustomEvent('changePage', { detail: 'course-finder' }));
+        break;
+      case 'Private Institutions':
+        setSelectedType('private');
+        break;
+      case 'Traditional Universities':
+        setSelectedType('traditional');
+        break;
+      case 'Universities of Technology':
+        setSelectedType('technology');
+        break;
+      default:
+        break;
+    }
   };
 
   return (
@@ -199,7 +131,7 @@ const Institutions = () => {
                     className="w-full px-4 py-3 text-left hover:bg-slate-50 border-b border-slate-100 last:border-b-0 transition-colors"
                   >
                     <div className="font-medium text-slate-800">{institution.name}</div>
-                    <div className="text-sm text-slate-500">{institution.location} • {institution.type}</div>
+                    <div className="text-sm text-slate-500">{institution.categories}</div>
                   </button>
                 ))}
               </div>
@@ -248,7 +180,7 @@ const Institutions = () => {
         <div className="mb-12" id="results-section">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-2xl font-bold text-slate-800">
-              {searchTerm || selectedType ? `Search Results (${filteredInstitutions.length})` : 'Featured Institutions'}
+              {searchTerm || selectedType ? `Search Results (${filteredInstitutions.length})` : 'All Institutions'}
             </h2>
             {(searchTerm || selectedType) && (
               <button 
@@ -269,31 +201,26 @@ const Institutions = () => {
               <div key={index} className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden card-hover cursor-pointer">
                 <div className="h-32 bg-gradient-to-br from-purple-100 to-blue-100 flex items-center justify-center relative">
                   <img 
-                    src={institution.thumbnail} 
+                    src="https://i.postimg.cc/qBWMRGX3/education.png" 
                     alt={institution.name}
                     className="w-16 h-16 object-contain"
                   />
                   <div className="absolute top-3 right-3">
-                    <institution.icon className="text-purple-600" size={20} />
+                    <Building className="text-purple-600" size={20} />
                   </div>
                 </div>
                 <div className="p-6">
                   <h3 className="font-semibold text-slate-800 mb-2">{institution.name}</h3>
                   <div className="space-y-2 text-sm text-slate-500 mb-4">
                     <div className="flex items-center gap-2">
-                      <MapPin size={16} />
-                      <span>{institution.location}</span>
-                    </div>
-                    <div className="flex items-center gap-2">
                       <Building size={16} />
-                      <span>{institution.type}</span>
+                      <span>{institution.categories.replace('Category:', '').trim()}</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Users size={16} />
-                      <span>{institution.students} students</span>
+                    <div className="text-lg font-bold text-purple-600">
+                      Application Fee: {institution.price}
                     </div>
-                    <div className="text-xs text-slate-400">
-                      Established {institution.established} • Application Fee: R{institution.applicationFee}
+                    <div className="text-xs text-slate-600 line-clamp-3">
+                      {institution.description.split('Qualifications Offered Summary List:')[0]}
                     </div>
                   </div>
                   <button 
@@ -329,7 +256,11 @@ const Institutions = () => {
           <h2 className="text-2xl font-bold text-slate-800 mb-6 text-center">Quick Access</h2>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
             {['Student Accommodation', 'Course Finder', 'Private Institutions', 'Traditional Universities', 'Universities of Technology'].map((link, index) => (
-              <button key={index} className="p-4 text-center hover:bg-slate-50 rounded-xl transition-colors">
+              <button 
+                key={index} 
+                onClick={() => handleQuickAccessClick(link)}
+                className="p-4 text-center hover:bg-slate-50 rounded-xl transition-colors"
+              >
                 <div className="w-12 h-12 bg-gradient-to-br from-purple-100 to-blue-100 rounded-xl mx-auto mb-2 flex items-center justify-center">
                   <BookOpen className="text-purple-600" size={20} />
                 </div>

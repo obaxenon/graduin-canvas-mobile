@@ -1,5 +1,6 @@
 import { Search, Filter, ArrowRight, BookOpen, Clock, MapPin, TrendingUp } from 'lucide-react';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import CareerAssessmentModal from './CareerAssessmentModal';
 
 const CourseFinder = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -9,7 +10,13 @@ const CourseFinder = () => {
   const [selectedCost, setSelectedCost] = useState('');
   const [filteredCourses, setFilteredCourses] = useState<any[]>([]);
   const [showSearchSuggestions, setShowSearchSuggestions] = useState(false);
+  const [showCareerAssessment, setShowCareerAssessment] = useState(false);
   const resultsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Scroll to top when component mounts
+    window.scrollTo(0, 0);
+  }, []);
 
   const courses = [
     // Engineering
@@ -119,6 +126,10 @@ const CourseFinder = () => {
   const handleSuggestionClick = (course: any) => {
     setSearchTerm(course.title);
     setShowSearchSuggestions(false);
+  };
+
+  const handleCareerAssessment = () => {
+    setShowCareerAssessment(true);
   };
 
   const displayCourses = filteredCourses.length > 0 ? filteredCourses : courses.slice(0, 8);
@@ -346,11 +357,19 @@ const CourseFinder = () => {
         <div className="bg-gradient-to-r from-purple-500 to-blue-500 rounded-3xl p-12 text-white text-center">
           <h2 className="text-3xl font-bold mb-4">Not Sure What to Study?</h2>
           <p className="text-lg mb-8 opacity-90">Take our career assessment to discover courses that match your interests and strengths.</p>
-          <button className="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200">
+          <button 
+            onClick={handleCareerAssessment}
+            className="bg-white text-purple-600 px-8 py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-200"
+          >
             Take Career Assessment
           </button>
         </div>
       </div>
+
+      {/* Career Assessment Modal */}
+      {showCareerAssessment && (
+        <CareerAssessmentModal onClose={() => setShowCareerAssessment(false)} />
+      )}
     </div>
   );
 };

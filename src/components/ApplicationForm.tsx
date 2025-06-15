@@ -86,7 +86,7 @@ const ApplicationForm: React.FC<ApplicationFormProps> = ({ isOpen, onClose, sele
         applicationId: `APP-${Date.now()}`
       };
 
-      const response = await fetch('https://formsubmit.co/alcottde@gmail.com', {
+      const response = await fetch('https://formsubmit.co/submissions@graduin.app', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
